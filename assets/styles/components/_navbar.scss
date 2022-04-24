@@ -1,0 +1,11 @@
+@use '../theme/theme' as theme;
+
+
+.mainToolbar{
+
+    .v-toolbar__title{
+        color: #FFFF;
+        font-size: 27px;
+        font-weight: 700;
+    }
+}
