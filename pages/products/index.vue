@@ -2,30 +2,30 @@
   <v-app>
     <v-container fluid class="py-12">
       <div class="d-flex flex-row justify-start align-start flex-wrap">
-        <template v-for="i in 8">
-          <v-col xl="3" lg="3" md="3" sm="6" xs="12">
+        <template >
+          <div v-for="product in products" :key="product._id">
+            <v-col xl="3" lg="3" md="3" sm="6" xs="12">
             <v-card
               class="s-card-product rounded-lg"
               elevation="4"
               to="/products/product"
             >
               <v-img
-                lazy-src="https://picsum.photos/id/11/10/6"
+                lazy-src="product.image"
                 max-height="200"
                 max-width="500"
-                src="https://picsum.photos/id/11/500/300"
+                src="product.image"
               ></v-img>
               <div class="d-flex flex-row justify-space-between px-5 pt-5">
-                <p class="subtitle-1 mb-0 font-weight-bold">Lorem ipsum</p>
+                <p class="subtitle-1 mb-0 font-weight-bold">{{product.name}}</p>
 
                 <v-chip>
-                  <p class="body-1 mb-0 font-weight-bold">20$</p></v-chip
+                  <p class="body-1 mb-0 font-weight-bold">{{product.price}} €</p></v-chip
                 >
               </div>
               <v-card-text>
                 <p class="body-2 text-secondary mb-1">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
+                  stock : {{product.stock}}
                 </p>
               </v-card-text>
               <v-divider></v-divider>
@@ -41,6 +41,7 @@
               </v-card-actions>
             </v-card>
           </v-col>
+          </div>
         </template>
       </div>
     </v-container>
@@ -48,10 +49,24 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
-    return {};
+    return {
+      products: [],
+    };
   },
-  methods: {},
+  mounted(){
+    fetch('http://localhost:3000/products')
+      .then(res => res.json())
+      .then(data => this.products = data)
+      .catch(err => console.log(err.message))
+      /*
+    await axios.get("http://localhost:3000/products")
+        .then(res => {
+          this.products = res.data
+        }).catch((err) => console.log('err',err));
+        */
+  }
 };
 </script>
