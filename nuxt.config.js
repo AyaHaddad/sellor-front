@@ -64,10 +64,18 @@ export default {
   server: {
     port: 8000, // default: 3000
   },
+  router: {
+    middleware: ["auth"],
+  },
 
   auth: {
+    redirect: {
+      login: "/auth/login",
+      logout: "/auth/login",
+    },
     strategies: {
       local: {
+        scheme: "local",
         url: "http://localhost:3000",
         token: {
           property: "token",
@@ -76,11 +84,15 @@ export default {
           // type: 'Bearer'
         },
         user: {
-          property: "user",
+          property: "data",
           // autoFetch: true
         },
         endpoints: {
-          login: { url: "/auth/login", method: "post" },
+          login: {
+            url: "/auth/login",
+            method: "post",
+            propertyName: "data.token",
+          },
           logout: { url: "/auth/logout", method: "post" },
           user: { url: "/auth/user", method: "get" },
         },

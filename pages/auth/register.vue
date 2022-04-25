@@ -64,6 +64,7 @@
 <script>
 export default {
   name: "register",
+  auth: "guest",
   data() {
     return {
       name: "",

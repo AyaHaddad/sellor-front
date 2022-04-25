@@ -46,7 +46,7 @@
                   Vous n'avez pas encore de stand ?
                 </p>
                 <v-btn
-                  to="auth/register"
+                  to="/auth/register"
                   block
                   color="primary"
                   depressed
@@ -83,6 +83,7 @@
 <script>
 export default {
   name: "login",
+  auth: "guest",
   data() {
     return {
       email: "",
@@ -91,6 +92,11 @@ export default {
   },
   methods: {
     submit() {
+      /**this.$axios
+        .$post("/auth/login", {
+          email: this.email,
+          password: this.password,
+        })*/
       this.$auth
         .loginWith("local", {
           data: {
@@ -98,27 +104,13 @@ export default {
             password: this.password,
           },
         })
-        .then(() => {
+        .then((res) => {
+          console.log(res);
+          this.$auth.setUser(res);
           console.log(this.$auth.user);
           this.$router.push("/");
         });
-      /**
-      await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password,
-        }),
-      });*/
     },
   },
 };
 </script>
-
-export default { // name: "login", // data() { // return { // login: { // email:
-"", // password: "", // }, // }; // }, // methods: { // async userLogin() { //
-try { // let response = await this.$auth.loginWith("local", { // data:
-this.login, // }); // console.log(response); // } catch (err) { //
-console.log(err); // } // }, // }, // };

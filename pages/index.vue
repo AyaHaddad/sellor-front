@@ -10,22 +10,24 @@ export default {
     };
   },
   mounted() {
-    const id = "666633333";
+    if (!this.$auth.loggedIn) {
+      this.$router.push("auth/login");
+    }
+    const id = this.$auth.user._id;
     console.log(this.$auth);
     try {
-      fetch(`http://localhost:3000/users/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": "",
-        },
-        credentials: "include",
-      }).then((response) => {
-        console.log(response);
-        const content = response.json();
-        console.log(content);
-        this.message = "Hi " + content.email;
-        this.$nuxt.$emit("auth", true);
-      });
+      this.$axios
+        .$get(`/users/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": this.$auth.user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.message = "Hi " + response.email;
+          this.$nuxt.$emit("auth", true);
+        });
     } catch (e) {
       this.message = "You are not logged in";
       this.$nuxt.$emit("auth", false);
