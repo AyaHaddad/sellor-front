@@ -80,6 +80,17 @@
 </template>
 
 <script>
+const axios = require("axios").default;
+// Axios test
+axios({
+  method: 'get',
+  url: 'http://localhost:3000/users/me',
+  headers: {
+    'Content-Type': 'application/json',
+    'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjU0NDNiYTM5ZWJjYzA0M2EwN2UzMDgiLCJpYXQiOjE2NDk2ODk1MzV9.P0t6d8gWp0ze8Xn1KZ_CDx_TFJzEL37LtGlSqmT9mQQ'
+  }
+}).then(function (res) {console.log(res);});
+// End of Axios test
 export default {
   data() {
     return {
