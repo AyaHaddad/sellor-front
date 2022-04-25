@@ -106,7 +106,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.$auth.setUser(res);
+          this.$auth.setUser(res.data);
           console.log(this.$auth.user);
           this.$router.push("/");
         });
