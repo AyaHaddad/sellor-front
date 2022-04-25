@@ -90,7 +90,19 @@ export default {
     };
   },
   methods: {
-    async submit() {
+    submit() {
+      this.$auth
+        .loginWith("local", {
+          data: {
+            email: this.email,
+            password: this.password,
+          },
+        })
+        .then(() => {
+          console.log(this.$auth.user);
+          this.$router.push("/");
+        });
+      /**
       await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -99,9 +111,14 @@ export default {
           email: this.email,
           password: this.password,
         }),
-      });
-      await this.$router.push("/");
+      });*/
     },
   },
 };
 </script>
+
+export default { // name: "login", // data() { // return { // login: { // email:
+"", // password: "", // }, // }; // }, // methods: { // async userLogin() { //
+try { // let response = await this.$auth.loginWith("local", { // data:
+this.login, // }); // console.log(response); // } catch (err) { //
+console.log(err); // } // }, // }, // };
