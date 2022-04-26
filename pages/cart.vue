@@ -83,9 +83,47 @@
 export default {
   data() {
     return {
+      myUser: {
+        bucketIds: [],
+      },
+      products: {},
       e1: "1",
       items: ["1", "2", "3", "4"],
     };
+  },
+
+  computed: {
+    test() {
+      return this.$auth.strategy.token.get();
+    },
+  },
+
+  mounted() {
+    this.$axios
+      .get("http://localhost:3000/users/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": this.test.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        this.myUser = res.data
+        console.log(this.myUser);
+      })
+      .catch((err) => console.log("err", err));
+      
+    this.$axios
+      .get("http://localhost:3000/products/" + this.myUser.bucketIds[0], {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": this.test.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        this.products = res.data
+        console.log(this.products);
+      })
+      .catch((err) => console.log("err", err));
   },
   methods: {},
 };
