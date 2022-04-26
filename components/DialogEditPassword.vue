@@ -37,7 +37,7 @@ export default {
     return {
       rules: [(v) => !!v || "Champ requis."],
       user: this.$auth.user,
-      password: this.$auth.user.password,
+      password: null,
       error: null,
     };
   },

@@ -30,7 +30,9 @@
           {{ email }}
           <v-icon color="000">mdi-triangle-small-down</v-icon>
         </v-btn>
-        <v-btn class="ml-3" text depressed to="/products"> Shop </v-btn>
+        <v-btn class="ml-3" text depressed to="/products" color="#FFF">
+          Shop
+        </v-btn>
         <!--basket-->
       </template>
       <v-list class="m-vlist-dropdown">
