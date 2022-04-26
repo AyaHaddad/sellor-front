@@ -11,6 +11,7 @@ export default {
     };
   },
   mounted() {
+
     if (!this.$auth.loggedIn) {
       this.$router.push("auth/login");
     }
