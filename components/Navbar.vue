@@ -15,16 +15,27 @@
     <v-menu v-if="$auth.loggedIn">
       <template v-slot:activator="{ on, attrs }">
         <!--username-->
-        <v-btn elevation="0" :ripple="false" v-bind="attrs" v-on="on">
-          {{ email }}
-          <v-icon class="pl-3" color="000">mdi-triangle-small-down</v-icon>
+        <v-btn @click="$auth.logout()" class="ml-3" icon depressed>
+          <v-icon color="#FFF">mdi-power</v-icon>
         </v-btn>
-
+        <v-btn
+          elevation="0"
+          color="white"
+          outlined
+          depressed
+          :ripple="false"
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ email }}
+          <v-icon color="000">mdi-triangle-small-down</v-icon>
+        </v-btn>
+        <v-btn class="ml-3" text depressed to="/products" color="#FFF">
+          Shop
+        </v-btn>
         <!--basket-->
-        <v-btn @click="$auth.logout()"> Déconnexion </v-btn>
       </template>
       <v-list class="m-vlist-dropdown">
-        <v-divider></v-divider>
         <v-list-item @click="openEditEmail = true">
           <v-list-item-title cols="auto">Editer mon email</v-list-item-title>
           <v-icon cols="auto" color="#001D46">fa-envelope</v-icon>
@@ -37,7 +48,6 @@
           >
           <v-icon cols="auto" color="#001D46">fa-lock</v-icon>
         </v-list-item>
-        <v-divider></v-divider>
 
         <!-- <v-divider></v-divider>
         <v-list-item @click="logout">
@@ -79,7 +89,7 @@ export default {
   },
   computed: {
     email() {
-      return this.$auth.user;
+      return this.$auth.user.email;
     },
   },
 };

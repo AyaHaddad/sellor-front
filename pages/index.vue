@@ -9,6 +9,11 @@ export default {
       message: "",
     };
   },
+  computed: {
+    test() {
+      return this.$auth.strategy.token.get();
+    },
+  },
   mounted() {
 // Axios test
     try {
@@ -37,7 +42,7 @@ export default {
         .$get(`/users/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            "auth-token": this.$auth.user.token,
+            "auth-token": this.test.split(" ")[1],
           },
         })
         .then((response) => {
