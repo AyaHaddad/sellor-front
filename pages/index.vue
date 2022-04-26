@@ -15,7 +15,7 @@ export default {
     },
   },
   mounted() {
-// Axios test
+    // Axios test
     try {
       this.$axios
         .$get(`/auth/me`, {
@@ -30,7 +30,7 @@ export default {
     } catch (e) {
       this.message = "error : " + e;
     }
-// End of Axios test
+    // End of Axios test
 
     if (!this.$auth.loggedIn) {
       this.$router.push("auth/login");
