@@ -57,16 +57,22 @@ export default {
     };
   },
   mounted(){
-    fetch('http://localhost:3000/products')
-      .then(res => res.json())
-      .then(data => this.products = data)
-      .catch(err => console.log(err.message))
-      /*
-    await axios.get("http://localhost:3000/products")
-        .then(res => {
-          this.products = res.data
-        }).catch((err) => console.log('err',err));
-        */
+// Axios test
+    try {
+      this.$axios
+        .$get(`/users`, {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": this.$auth.user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    } catch (e) {
+      this.message = "error : " + e;
+    }
+// End of Axios test
   }
 };
 </script>

@@ -3,7 +3,6 @@
 </template>
 
 <script>
-const axios = require("axios").default;
 export default {
   data() {
     return {
@@ -11,12 +10,28 @@ export default {
     };
   },
   mounted() {
+// Axios test
+    try {
+      this.$axios
+        .$get(`/auth/me`, {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": this.$auth.user.token,
+          },
+        })
+        .then((response) => {
+          //console.log(response);
+        });
+    } catch (e) {
+      this.message = "error : " + e;
+    }
+// End of Axios test
 
     if (!this.$auth.loggedIn) {
       this.$router.push("auth/login");
     }
     const id = this.$auth.user._id;
-    // console.log(this.$auth);
+    console.log(this.$auth);
     try {
       this.$axios
         .$get(`/users/${id}`, {
@@ -26,7 +41,7 @@ export default {
           },
         })
         .then((response) => {
-          // console.log(response);
+          console.log(response);
           this.message = "Hi " + response.email;
           this.$nuxt.$emit("auth", true);
         });
