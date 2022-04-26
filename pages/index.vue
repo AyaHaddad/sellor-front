@@ -16,7 +16,7 @@ export default {
       this.$router.push("auth/login");
     }
     const id = this.$auth.user._id;
-    console.log(this.$auth);
+    // console.log(this.$auth);
     try {
       this.$axios
         .$get(`/users/${id}`, {
@@ -26,7 +26,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.message = "Hi " + response.email;
           this.$nuxt.$emit("auth", true);
         });
