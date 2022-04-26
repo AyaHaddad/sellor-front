@@ -21,29 +21,40 @@
             </v-col>
           </div>
           <v-divider class="mx-3 mb-3"></v-divider>
-          <div class="d-flex flex-row py-3">
-            <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
-              <p class="subtitle-1 font-weight-bold">Article</p>
-            </v-col>
-            <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
-              <v-chip> <p class="body-1 mb-0 font-weight-bold">20$</p></v-chip>
-            </v-col>
-            <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
-              <v-select
-                v-model="e1"
-                :items="items"
-                placeholder="quantité"
-                outlined
-                menu-props="auto"
-                dense
-                width="60px"
-              ></v-select>
-            </v-col>
-            <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
-              <v-btn type="submit" color="red" text depressed
-                ><v-icon dense class="mr-1">mdi-delete-outline</v-icon>Supprimer
-              </v-btn>
-            </v-col>
+          <div v-if="products != null && products.length > 0">
+            <div
+              class="d-flex flex-row py-3"
+              v-for="product in products"
+              :key="product.id"
+            >
+              <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
+                <p class="subtitle-1 font-weight-bold">{{ product.name }}</p>
+              </v-col>
+              <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
+                <v-chip>
+                  <p class="body-1 mb-0 font-weight-bold">
+                    {{ product.price }}$
+                  </p></v-chip
+                >
+              </v-col>
+              <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
+                <v-select
+                  v-model="e1"
+                  :items="items"
+                  placeholder="quantité"
+                  outlined
+                  menu-props="auto"
+                  dense
+                  width="60px"
+                ></v-select>
+              </v-col>
+              <v-col xl="3" lg="3" md="3" sm="3" xs="3" class="py-0">
+                <v-btn type="submit" color="red" text depressed
+                  ><v-icon dense class="mr-1">mdi-delete-outline</v-icon
+                  >Supprimer
+                </v-btn>
+              </v-col>
+            </div>
           </div>
         </v-container>
       </v-col>
@@ -64,6 +75,7 @@
             <p class="subtitle-1 mb-0 font-weight-bold">20$</p>
 
             <v-btn
+              @click="submit"
               class="mt-12"
               type="submit"
               color="primary"
@@ -83,10 +95,53 @@
 export default {
   data() {
     return {
+      myUser: {
+        bucketIds: [],
+      },
+      products: [],
       e1: "1",
       items: ["1", "2", "3", "4"],
     };
   },
+
+  computed: {
+    test() {
+      return this.$auth.strategy.token.get();
+    },
+  },
+  mounted() {
+    this.$axios
+      .$get(`/auth/me`, {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": this.test.split(" ")[1],
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        this.myUser = res;
+        if (this.myUser.bucketIds != null && this.myUser.bucketIds.length > 0) {
+          this.myUser.bucketIds.forEach((element) => {
+            console.log(element);
+            this.$axios
+              .$get("http://localhost:3000/products/" + element, {
+                headers: {
+                  "Content-Type": "application/json",
+                  "auth-token": this.test.split(" ")[1],
+                },
+              })
+              .then((response) => {
+                this.products.push(response);
+                console.log(response);
+                console.log(this.products);
+              })
+              .catch((err) => console.log("err", err));
+          });
+        }
+      })
+      .catch((err) => console.log("err", err));
+  },
+
   methods: {},
 };
 </script>
