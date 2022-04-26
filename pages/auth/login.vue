@@ -24,12 +24,14 @@
                   label="Email"
                   type="email"
                   outlined
+                  :rules="rules"
                 ></v-text-field>
                 <!-- column respons -->
                 <v-text-field
                   v-model="password"
                   label="Mot de passe"
                   outlined
+                  :rules="rules_password"
                 ></v-text-field>
               </v-card-text>
               <v-card-actions class="px-7 pb-7">
@@ -88,6 +90,13 @@ export default {
     return {
       email: "",
       password: "",
+      rules: [(v) => !!v || "Champ requis."],
+      rules_password: [
+        (v) => !!v || "Champ requis.",
+        (v) =>
+          v.length >= 6 ||
+          "Le mot de passe doit être composé de 6 caractères minimun !",
+      ],
     };
   },
   methods: {
@@ -97,19 +106,21 @@ export default {
           email: this.email,
           password: this.password,
         })*/
-      this.$auth
-        .loginWith("local", {
-          data: {
-            email: this.email,
-            password: this.password,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          this.$auth.setUser(res.data);
-          console.log(this.$auth.user);
-          this.$router.push("/");
-        });
+      if (this.$refs.form.validate()) {
+        this.$auth
+          .loginWith("local", {
+            data: {
+              email: this.email,
+              password: this.password,
+            },
+          })
+          .then((res) => {
+            // console.log(res);
+            // this.$auth.setUser(res.data);
+            // console.log(this.$auth.user);
+            this.$router.push("/");
+          });
+      }
     },
   },
 };

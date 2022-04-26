@@ -84,17 +84,17 @@ export default {
           // type: 'Bearer'
         },
         user: {
-          property: "data",
+          property: "",
           // autoFetch: true
         },
         endpoints: {
           login: {
             url: "/auth/login",
             method: "post",
-            propertyName: "data.token",
+            propertyName: "token",
           },
           logout: { url: "/auth/logout", method: "post" },
-          user: { url: "/auth/user", method: "get" },
+          user: { url: "/auth/me", method: "get" },
         },
       },
     },

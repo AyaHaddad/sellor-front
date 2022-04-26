@@ -21,6 +21,7 @@
                     v-model="email"
                     label="Email"
                     type="email"
+                    :rules="rules"
                     outlined
                   ></v-text-field>
                 </v-col>
@@ -30,6 +31,7 @@
                   <v-text-field
                     v-model="name"
                     label="Pseudo"
+                    :rules="rules"
                     outlined
                   ></v-text-field>
                 </v-col>
@@ -40,6 +42,7 @@
                   <v-text-field
                     v-model="password"
                     label="Mot de passe"
+                    :rules="rules_password"
                     outlined
                   ></v-text-field>
                 </v-col>
@@ -70,20 +73,29 @@ export default {
       name: "",
       email: "",
       password: "",
+      rules: [(v) => !!v || "Champ requis."],
+      rules_password: [
+        (v) => !!v || "Champ requis.",
+        (v) =>
+          v.length >= 6 ||
+          "Le mot de passe doit être composé de 6 caractères minimun !",
+      ],
     };
   },
   methods: {
     async submit() {
-      await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: this.name,
-          email: this.email,
-          password: this.password,
-        }),
-      });
-      await this.$router.push("login");
+      if (this.$refs.form.validate()) {
+        await fetch("http://localhost:3000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: this.name,
+            email: this.email,
+            password: this.password,
+          }),
+        });
+        await this.$router.push("login");
+      }
     },
   },
 };
