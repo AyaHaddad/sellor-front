@@ -64,6 +64,7 @@
             <p class="subtitle-1 mb-0 font-weight-bold">20$</p>
 
             <v-btn
+              @click="submit"
               class="mt-12"
               type="submit"
               color="primary"
@@ -97,14 +98,13 @@ export default {
       return this.$auth.strategy.token.get();
     },
   },
-
   mounted() {
     this.$axios
       .get("http://localhost:3000/users/me", {
         headers: {
           "Content-Type": "application/json",
           "auth-token": this.test.split(" ")[1],
-        },
+        }
       })
       .then((res) => {
         this.myUser = res.data
@@ -117,7 +117,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
           "auth-token": this.test.split(" ")[1],
-        },
+        }
       })
       .then((res) => {
         this.products = res.data
@@ -125,6 +125,7 @@ export default {
       })
       .catch((err) => console.log("err", err));
   },
+
   methods: {},
 };
 </script>
